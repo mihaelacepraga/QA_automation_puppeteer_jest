@@ -1,0 +1,27 @@
+{
+  "name": "qa_automation_puppeteer_jest",
+  "version": "1.0.0",
+  "description": "Visual Regression Testing with Puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test-snapshots": "jest --config=jest.config.js --detectOpenHandles --forceExit",
+    
+    "test-snapshots-update": "jest --config=jest.config.js --updateSnapshot --detectOpenHandles --forceExit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mihaelacepraga/QA_automation_puppeteer_jest.git"
+  },
+  "author": "mihaelacepraga@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mihaelacepraga/QA_automation_puppeteer_jest/issues"
+  },
+  "homepage": "https://github.com/mihaelacepraga/QA_automation_puppeteer_jest#readme",
+  "dependencies": {
+    "jest": "^29.5.0",
+    "jest-image-snapshot": "^6.1.0",
+    "prettier": "^2.8.6",
+    "puppeteer": "^19.7.5"
+  }
+}
