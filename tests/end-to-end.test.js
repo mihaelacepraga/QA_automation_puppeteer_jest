@@ -3,7 +3,7 @@ import TopBar from "../pages/components/TopBar";
 import CreateAccountPage from "../pages/CreateAccountPage";
 import LoginPage from "../pages/LoginPage";
 
-import { user, password } from "../config";
+import { user, password, firstname, lastname, email, pass } from "../config";
 
 
 describe("End-to-end test", () => {
@@ -15,47 +15,45 @@ describe("End-to-end test", () => {
     beforeAll(async () => {
         jest.setTimeout(60000);
         jest.useRealTimers();
-        create_account =new CreateAccountPage();
         homePage = new HomePage();
         loginPage = new LoginPage();
         topBar = new TopBar();
+        create_account =new CreateAccountPage();
     });
-  
+//   VISIT HOME PAGE
     it("Homepage should work", async () => {
-        await homePage.visit("https://www.ellemental.ro/");
-        const titleSite = await page.title();
+        await homePage.visit();
+        const titleSite = await homePage.getTitle()
         expect(titleSite).toBe("Ellemental care with clean elements");
-    }, 7000);
+    }, 5000);
 
+// NAVBAR SHOULD BE DISPLAYED 
     it("Navbar should be displayed", async () => {
         await homePage.isNavbarDisplayed();
         await topBar.isTopBarDisplayed();
-        const textLogin = await page.$eval('span[class="header_icon_btn_text header_v_align_m"]', element => element.textContent);
+        const textLogin = await homePage.getHeaderContent();
         expect(textLogin).toBe("Logare");
-    });
+    },6000);
 
+// vERIFY IF ERROR MESAGE IS AS EXPECTED 
     it("Try to login with incorect credentials", async () => {
         await topBar.clickSignInBtn();
-        // await loginPage.visit();
-        await loginPage.isLoginForm();
+        const isVisibleLoginForm = await loginPage.isLoginForm();
+        expect(isVisibleLoginForm).toBeTruthy();
         await loginPage.login(user, password);
-        const errorText = await page.$eval("#login-form > div > div > div.help-block.alert.alert-danger > ul > li", element => element.textContent)
+        const errorText = await loginPage.getErrorMessage()
         expect(errorText).toBe("Logare eșuată");  
         
-    });
+    },5000);
 
-    it("Create user account", async () => {
+// CREATE USER ACCOUNT WITH THE SAME EMAIL ADDRESSS
+    it("Create user account with the same email address", async () => {
         await create_account.visit();
         await create_account.isCustumerFormDisplayed();
-        await create_account.createAccount(
-            "test", 
-            "lasttest", 
-            "myemail@gmail.com", 
-            "mypassword");
-        const messageConfirm = await page.$eval('ul[class="m-b-0"]', element => element.textContent);
-        expect(messageConfirm).toContain("Adresa de e-mail greșită")
-        
+        await create_account.createAccount(firstname, lastname, email, pass);
+        // const messageConfirm = await create_account.getConfirmMessage();
+        expect(await create_account.getConfirmMessage()).toContain("Adresa de e-mail greșită")  
     })
 
 
-});
+},5000);

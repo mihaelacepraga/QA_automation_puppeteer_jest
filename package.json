@@ -4,7 +4,7 @@
   "description": "test framework using jest and puppeteer",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit"
+    "e2e": "jest --runInBand --detectOpenHandles --forceExit "
   },
   "repository": {
     "type": "git",
